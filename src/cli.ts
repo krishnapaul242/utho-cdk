@@ -8,7 +8,8 @@ const program = new Command();
 program
   .name("cloudctl")
   .description("CLI to interact with Cloud Provider APIs")
-  .version("0.1.0");
+  .version("0.1.0")
+  .option('-d, --debug', 'Enable verbose debug logging');
 
 program
   .command("call")
@@ -42,11 +43,20 @@ program
   });
 
 // Helper to create client
-interface BaseOpts { apiKey?: string; url?: string }
+interface BaseOpts { apiKey?: string; url?: string; debug?: boolean }
 function buildClient(opts: BaseOpts) {
-  const apiKey = opts.apiKey ?? process.env.CLOUD_API_KEY;
+  const globalOpts = program.opts<{ debug?: boolean }>();
+  if (globalOpts.debug) process.env.CLOUD_DEBUG = '1';
+  const apiKeyRaw = opts.apiKey ?? process.env.CLOUD_API_KEY;
+  const apiKey = apiKeyRaw?.trim();
   if (!apiKey) throw new Error("API key required (flag or CLOUD_API_KEY env var)");
-  return new ApiClient({ baseUrl: opts.url || process.env.CLOUD_BASE_URL || 'https://api.utho.com/v2', apiKey });
+  const baseUrl = opts.url || process.env.CLOUD_BASE_URL || 'https://api.utho.com/v2';
+  if (process.env.CLOUD_DEBUG === '1') {
+  const start = apiKey.slice(0, 6);
+  const end = apiKey.slice(-6);
+  console.error('[cloudctl][config]', { baseUrl, apiKeyMasked: `${start}...${end}`, length: apiKey.length });
+  }
+  return new ApiClient({ baseUrl, apiKey });
 }
 
 program.command('apikey:list')

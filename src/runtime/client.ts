@@ -8,7 +8,8 @@ export class ApiClient {
       baseURL: cfg.baseUrl,
       apiKey: cfg.apiKey,
       timeoutMs: cfg.timeoutMs,
-      userAgent: cfg.userAgent
+  userAgent: cfg.userAgent,
+  debug: process.env.CLOUD_DEBUG === '1'
     });
   }
 
