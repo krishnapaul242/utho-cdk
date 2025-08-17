@@ -31,15 +31,15 @@ jobs:
       - name: Generate docs
         run: npm run docs:generate
       - name: Install MkDocs (if config present)
-        if: exists('mkdocs.yml')
+        if: ${{ hashFiles('mkdocs.yml') != '' }}
         run: |
           pip install mkdocs mkdocs-material
       - name: Build MkDocs site (if config present)
-        if: exists('mkdocs.yml')
+        if: ${{ hashFiles('mkdocs.yml') != '' }}
         run: |
           mkdocs build -d site
       - name: Copy MkDocs site to docs (if built)
-        if: exists('mkdocs.yml')
+        if: ${{ hashFiles('mkdocs.yml') != '' }}
         run: |
           rsync -a site/ docs/
       - name: Upload artifact
