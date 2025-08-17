@@ -1,0 +1,4794 @@
+openapi: 3.0.0
+info:
+  title: Utho Cloud API
+  description: "API for UTHO Cloud"
+  version: 1.0.0
+
+produces:
+  - application/json
+
+servers:
+  - url: https://api.utho.com/v2
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "Please enter your unique API key prefaced by 'Bearer' for access."
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: API Key
+    description: >-
+      Operations related to API keys.
+  - name: Account
+  - name: Actions
+  - name: Activity Logs
+  - name: Backups
+  - name: DataBase
+  - name: DNS
+  - name: Cloud-Servers
+  - name: Firewalls
+  - name: ISO
+  - name: Kubernetes
+  - name: Load-Balancer
+  - name: SQS
+  - name: SSH Key
+  - name: Snapshots
+  - name: SubUser
+  - name: Transfer/Recieve Resources
+  - name: VPC-old
+  - name: VPN
+  - name: Autoscaling
+  - name: vpc
+  - name: vpc > vpc
+  - name: vpc > subnets
+  - name: vpc > nat-gateway
+  - name: vpc > elastic-ip
+  - name: vpc > Peering Connection
+  - name: vpc > routes
+  - name: vpc > internet-gateway
+  - name: vpc > route-tables
+  - name: Stacks
+  - name: SSL
+  - name: Object Storage
+  - name: Object Storage > Bucket
+  - name: Object Storage > Access Keys
+  - name: Elastic Block Storage
+  - name: Container Registry
+  - name: Monitoring & Contacts
+  - name: TargetGroup
+  - name: IpSec
+
+paths:
+  /api:
+    get:
+      tags:
+        - API Key
+      summary: API Key List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+
+  /api/generate:
+    post:
+      tags:
+        - API Key
+      summary: Add API Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_key
+                write: 'on'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/{id}/delete:
+    delete:
+      tags:
+        - API Key
+      summary: Delete API Key
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /account/info:
+    get:
+      tags:
+        - Account
+      summary: Account information
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /actions/{id}:
+    get:
+      tags:
+        - Actions
+      summary: Action Detail
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/actions/:
+    get:
+      tags:
+        - Actions
+      summary: Action list
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /activity:
+    get:
+      tags:
+        - Activity Logs
+      summary: Get Activity Logs
+      parameters:
+        - name: perpage
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /backups:
+    get:
+      tags:
+        - Backups
+      summary: Get Backups
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases:
+    get:
+      tags:
+        - DataBase
+      summary: Database Clusters List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - DataBase
+      summary: Add Cluster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: inmumbaizone2
+                cpumodel: amd
+                cluster_version: '8.0'
+                cluster_engine: mysql, mariadb
+                size: '10157'
+                replica_count: '1'
+                network_type: public
+                vpc: a222aca0-f435-44e5-aa54-fbd8be2ca7a7
+                subnet: a222aca0-f435-44e5-aa54-fbd8be2ca7a7
+                firewall: '93'
+                cluster_label: utho-aa2owfMR-cluster
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{cluster_id}:
+    get:
+      tags:
+        - DataBase
+      summary: Database Cluster Details
+      parameters:
+        - name: cluster_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}/database:
+    post:
+      tags:
+        - DataBase
+      summary: Add Database To Cluster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: mydatabase
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}/database/{dbname}:
+    delete:
+      tags:
+        - DataBase
+      summary: Delete Database from Cluster
+      parameters:
+        - name: confirm
+          in: query
+          schema:
+            type: string
+          example: ':dbname'
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: dbname
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}/user:
+    post:
+      tags:
+        - DataBase
+      summary: Add Database User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_user
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{db_id}/user:
+    delete:
+      tags:
+        - DataBase
+      summary: Delete Database user
+      parameters:
+        - name: confirm
+          in: query
+          schema:
+            type: string
+          example: ':dbuser_name'
+        - name: db_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}/database/{dbname}/user:
+    post:
+      tags:
+        - DataBase
+      summary: Update Database Permissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                db_name: db1
+                db_user: user1
+                permission: read, full, none
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: dbname
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}/trustedhost/:
+    post:
+      tags:
+        - DataBase
+      summary: Add Trusted Host To Database Cluster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                trusted_host: 103.234.244.112
+                type: add
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}/trustedhost/{trustedhost_ip}:
+    delete:
+      tags:
+        - DataBase
+      summary: Delete Trusted Host from Database Cluster
+      parameters:
+        - name: confirm
+          in: query
+          schema:
+            type: string
+          example: ':trustedhost_ip/'
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: trustedhost_ip
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{db_id}/{cloud_id}/certificate:
+    get:
+      tags:
+        - DataBase
+      summary: Download CA Certificate
+      parameters:
+        - name: db_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: cloud_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{db_id}/backup:
+    post:
+      tags:
+        - DataBase
+      summary: Create Backup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                clustername: utho-aa2owfmr-cluster
+      parameters:
+        - name: db_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{db_id}/securitygroup/{firewall_id}:
+    post:
+      tags:
+        - DataBase
+      summary: Add Firewall
+      requestBody:
+        content: {}
+      parameters:
+        - name: db_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: firewall_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - DataBase
+      summary: Detach Firewall
+      parameters:
+        - name: db_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: firewall_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /databases/{id}:
+    delete:
+      tags:
+        - DataBase
+      summary: Delete Database Cluster
+      parameters:
+        - name: confirm
+          in: query
+          schema:
+            type: string
+          example: ':clustername'
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dns:
+    get:
+      tags:
+        - DNS
+      summary: DNS List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dns/{domain}:
+    get:
+      tags:
+        - DNS
+      summary: Domains DNS Detail
+      parameters:
+        - name: domain
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dns/adddomain:
+    post:
+      tags:
+        - DNS
+      summary: Add DNS Domain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                domain: mydomain
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dns/{domain}/record/add/:
+    post:
+      tags:
+        - DNS
+      summary: Add DNS Record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: '{{A, AAAA, CAA, CNAME, MX, TXT, SRV, NS}}'
+                hostname: '{{hostname}}'
+                value: '{{value}}'
+                ttl: '{{31}}'
+                priority: '{{1800}}'
+                porttype: '{{for SRV records only. null otherwise}}'
+                port: '{{000.00.00.000}}'
+                weight: '{{12}}'
+      parameters:
+        - name: domain
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dns/{domain}/delete:
+    delete:
+      tags:
+        - DNS
+      summary: DNS Domain Delete
+      parameters:
+        - name: domain
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dns/{domain}/record/{recordid}/delete/:
+    delete:
+      tags:
+        - DNS
+      summary: Delete DNS Record
+      parameters:
+        - name: domain
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: recordid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/:
+    get:
+      tags:
+        - Cloud-Servers
+      summary: List of Cloud Servers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}:
+    get:
+      tags:
+        - Cloud-Servers
+      summary: Detail of Cloud Server
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/deploy/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Deploy Cloud Instance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: inmumbaizone2
+                planid: '10045'
+                billingcycle: hourly
+                auth: option1
+                enable_publicip: 'true'
+                subnetRequired: 'true'
+                firewall: firewall_id
+                cpumodel: intel
+                enablebackup: 'true'
+                root_password: <root_password>
+                support: unmanaged
+                vpc: 5c1cbe29-74db-4351-a190-93b823793c0a
+                cloud:
+                  - hostname: my_cloud
+                image: ubuntu-22.04-x86_64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/images:
+    get:
+      tags:
+        - Cloud-Servers
+      summary: Available OS Images
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/resizeplans/:
+    get:
+      tags:
+        - Cloud-Servers
+      summary: Available Resize Plans
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/snapshot/create/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Create Snapshot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: snapshot_name
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/snapshot/{snapshotid}/delete:
+    delete:
+      tags:
+        - Snapshots
+      summary: Delete Snapshot
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: snapshotid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/destroy:
+    delete:
+      tags:
+        - Cloud-Servers
+      summary: Destroy
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/backups/disable:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Disable Backup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/backups/enable:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Enable Backup
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/billingcycle:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Update Billing Cycle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                billingcycle: monthly_or_3month_or_12month
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/hardreboot/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Hard Reboot
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/powercycle/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Power Cycle
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/poweroff/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Power Off
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/poweron/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Power On
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/rebuild/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Rebuild
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                image: centos-7.2_x86_64
+                confirm: >-
+                  I am aware this action will delete data permanently and build
+                  a fresh server
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: Please enter your unique API key preface by "Bearer" for access
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/resetpassword/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Reset Password
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/resize/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Resize
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: ramcpu, full
+                plan: '10045'
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/snapshot/{snapshotid}/restore/:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Restore Snapshot
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: snapshotid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/storage/{storageid}/update:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Update Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                bus: virtio
+                type: Primary
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: storageid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/assignpublicip:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Assign Public IP
+      requestBody:
+        content: {}
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloud_id}/updaterdns/{ip_address}:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Update RDNS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                rdns: 255.255.255.255.network.test.com
+      parameters:
+        - name: cloud_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: ip_address
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/1637583/ip/{public_ip}/delete:
+    delete:
+      tags:
+        - Cloud-Servers
+      summary: Delete Public IP
+      parameters:
+        - name: public_ip
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/enablerescue:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Enable Rescue Mode
+      requestBody:
+        content: {}
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/disablerescue:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Disable Rescue Mode
+      requestBody:
+        content: {}
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/mountiso:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Mount ISO
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                iso: windows2012.iso
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/umountiso:
+    post:
+      tags:
+        - Cloud-Servers
+      summary: Unmount ISO
+      requestBody:
+        content: {}
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall:
+    get:
+      tags:
+        - Firewalls
+      summary: Firewalls List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/{id}:
+    get:
+      tags:
+        - Firewalls
+      summary: Firewall Info
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/create:
+    post:
+      tags:
+        - Firewalls
+      summary: Create Firewall
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_web_firewall
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/{firewall_id}/rule/add:
+    post:
+      tags:
+        - Firewalls
+      summary: Add Rule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: outgoing,incoming
+                service: SSH
+                protocol: tcp
+                port: '22'
+                addresses: ALL
+      parameters:
+
+        - name: firewall_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/{firewall_id}/rule/{rule_id}/delete:
+    delete:
+      tags:
+        - Firewalls
+      summary: Delete Rule
+      parameters:
+
+        - name: firewall_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: rule_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/{firewall_id}/server/add:
+    post:
+      tags:
+        - Firewalls
+      summary: Add Server to Firewall
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                cloudid: '10054'
+      parameters:
+
+        - name: firewall_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/{id}/server/{cloudid}/delete:
+    delete:
+      tags:
+        - Firewalls
+      summary: Delete Server from Firewall
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /firewall/{id}/destroy:
+    delete:
+      tags:
+        - Firewalls
+      summary: Destroy Firewall
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /iso:
+    get:
+      tags:
+        - ISO
+      summary: ISO List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /iso/add:
+    post:
+      tags:
+        - ISO
+      summary: Create ISO
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: innoida
+                name: my_iso
+                url: https://abc.com/linux.iso
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /iso/{id}/delete:
+    delete:
+      tags:
+        - ISO
+      summary: Delete ISO
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/kubernetes:
+    get:
+      tags:
+        - Kubernetes
+      summary: Kubernetes List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{k8_id}:
+    get:
+      tags:
+        - Kubernetes
+      summary: Kubernetes Details
+      parameters:
+
+        - name: k8_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/deploy:
+    post:
+      tags:
+        - Kubernetes
+      summary: Add Kubernetes Cluster
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: inmumbaizone2
+                cluster_label: MyK8S-HP6I9C1C-bhcx
+                cluster_version: 1.28.9-utho
+                nodepools:
+                  - label: pool-rt8tIF2E
+                    size: '10199'
+                    count: '1'
+                    ebs:
+                      - disk: '30'
+                        type: nvme
+                vpc: a222aca0-f435-44e5-aa54-fbd8be2ca7a7
+                subnet: a222aca0-f435-44e5-aa54-fbd8be2ca7a7
+                network_type: public
+                firewall: '93'
+                cpumodel: amd
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/loadbalancer/{loadbalancer_id}:
+    post:
+      tags:
+        - Kubernetes
+      summary: Add Network Loadbalancer
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: Pleae enter your unique API key prefaced by "Bearer" for access
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: loadbalancer_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Kubernetes
+      summary: Delete Network Loadbalancer
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: loadbalancer_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/securitygroup/{securitygroup_id}:
+    post:
+      tags:
+        - Kubernetes
+      summary: Add Security Groups
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: securitygroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Kubernetes
+      summary: Detach Security Groups
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: securitygroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/targetgroup/{targetgroup_id}:
+    post:
+      tags:
+        - Kubernetes
+      summary: Add Target Groups
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: targetgroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Kubernetes
+      summary: Delete Target Groups
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: targetgroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/destroy:
+    delete:
+      tags:
+        - Kubernetes
+      summary: Delete Kubernetes
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/download:
+    get:
+      tags:
+        - Kubernetes
+      summary: Download Kubernetes
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/kubernetes/{id}/stop:
+    post:
+      tags:
+        - Kubernetes
+      summary: Power Off Kubernetes
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/start:
+    post:
+      tags:
+        - Kubernetes
+      summary: Power On Kubernetes
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{id}/nodepool/{id}/update:
+    post:
+      tags:
+        - Kubernetes
+      summary: Update Kubernetes autoscale Nodepool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                count: '1'
+                label: pool-OmWD5z4U
+                pool_type: static or autoscale
+                size: '1'
+                policies: >-
+                  [{adjust:'1', compare: 'above or below', cooldown: '300',
+                  name: 'policy-nETRxEvU', period: '5m', product:
+                  'kubernetes_worker', type: 'cpu or ram', value: '60'},...]
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{k8_id}/nodepool/{ipool_id}/update:
+    post:
+      tags:
+        - Kubernetes
+      summary: Update Kubernetes static Nodepool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                count: '1'
+                label: pool-OmWD5z4U
+                pool_type: static
+                size: '1'
+      parameters:
+
+        - name: k8_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: ipool_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kubernetes/{k8_id}/nodepool/add:
+    post:
+      tags:
+        - Kubernetes
+      summary: Add Nodepool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                nodepools:
+                  - label: pool-hQE52Id9
+                    size: '10199'
+                    count: '1'
+                    ebs:
+                      - disk: '30'
+                        type: nvme
+      parameters:
+        - name: k8_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/acl/:
+    post:
+      tags:
+        - Load-Balancer
+      summary: Add ACL Rule - Application Loadbalancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: ACT_1
+                conditionType: http_user_agent
+                frontend_id: '123454'
+                value: value
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/route/:
+    post:
+      tags:
+        - Load-Balancer
+      summary: Add Advance Routing - Application Loadbalancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                acl_id: acl_1
+                route_condition: 'true'
+                frontend_id: '12234'
+                target_groups: '231'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/backend/:
+    post:
+      tags:
+        - Load-Balancer
+      summary: Add Backend - Network Loadbalancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                cloudid: '10067'
+                backend_port: 103.200.89.00
+                frontend_id: '12453'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/frontend:
+    post:
+      tags:
+        - Load-Balancer
+      summary: Add Frontend
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: frontend-1
+                algorithm: roundrobin
+                proto: HTTP
+                port: '80'
+                certificate_id: >-
+                  Provide ssl certificate_id if proto type is HTTPS otherwise
+                  it's optional.
+                redirecthttps: >-
+                  Provide 1 if need to redirect all traffic to https otherwise
+                  provide 0.
+                cookie: >-
+                  Provide 1 if need cookie session for your algorithm otherwise
+                  provide 0.
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Load-Balancer
+      summary: Update Frontend
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: frontend-1
+                algorithm: >-
+                  Load-Balancer algorithm must be either roundrobin or
+                  leastconn.
+                proto: 'protocol type must be either HTTP or HTTPS. '
+                port: '80'
+                certificate_id: >-
+                  Provide ssl certificate_id if proto type is HTTPS otherwise
+                  it's optional.
+                redirecthttps: >-
+                  Provide 1 if need to redirect all traffic to https otherwise
+                  provide 0.
+                cookie: >-
+                  Provide 1 if need cookie session for your algorithm otherwise
+                  provide 0.
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/add/:
+    post:
+      tags:
+        - Load-Balancer
+      summary: Add Load Balancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: innoida
+                name: webapplb
+                type: >-
+                  Load-Balancer type must be either application or network. The
+                  default value is application.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/acl/{acl_id}:
+    delete:
+      tags:
+        - Load-Balancer
+      summary: Delete ACL Rule - Application Loadbalancer
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: acl_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Load-Balancer
+      summary: Update ACL Rule - Application Loadbalancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: ACL_1
+                conditionType: >-
+                  http_user_agent, http_referer, url_path, http_method,
+                  query_string, http_header.
+                frontend_id: '12345'
+                value: value
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: acl_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/backend/{backend_id}:
+    delete:
+      tags:
+        - Load-Balancer
+      summary: Delete Backend - Network Loadbalancer
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: backend_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/frontend/{frontend_id}:
+    delete:
+      tags:
+        - Load-Balancer
+      summary: Delete Frontend
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: frontend_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/route/{route_id}:
+    delete:
+      tags:
+        - Load-Balancer
+      summary: Delete Route - Application Loadbalancer
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: route_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Load-Balancer
+      summary: Update Advance Routing - Application Loadbalancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                acl_id: acl_1
+                route_condition: true or false
+                frontend_id: '12345'
+                target_groups: '231'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: route_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/destroy/:
+    delete:
+      tags:
+        - Load-Balancer
+      summary: Destroy Load Balancer
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/:
+    get:
+      tags:
+        - Load-Balancer
+      summary: Load Balancer Detail
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/:
+    get:
+      tags:
+        - Load-Balancer
+      summary: Load Balancers List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /loadbalancer/{id}/update:
+    put:
+      tags:
+        - Load-Balancer
+      summary: Update Load Balancer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: innoida
+                name: webapplb
+                type: application
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sqs:
+    get:
+      tags:
+        - SQS
+      summary: Get SQS List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - SQS
+      summary: Create SQS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_sqs
+                dcslug;: innoida;
+                planid: '10045'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sqs/{id}:
+    get:
+      tags:
+        - SQS
+      summary: Get SQS Details
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sqs/{sqs_id}/destroy:
+    delete:
+      tags:
+        - SQS
+      summary: Delete SQS
+      parameters:
+        - name: confirm
+          in: query
+          schema:
+            type: string
+          example: ':sqs_name'
+        - name: sqs_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sqs/{id}/queue:
+    post:
+      tags:
+        - SQS
+      summary: Add Queue
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: queue-ywqo2pmc
+                FifoQueue;: false;
+                VisibilityTimeout: 30 in seconds
+                MessageRetentionPeriod: 330 in seconds
+                maximumMessageSize: 100 in kb
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /key:
+    get:
+      tags:
+        - SSH Key
+      summary: SSH Key List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /key/import:
+    post:
+      tags:
+        - SSH Key
+      summary: Add SSH Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: api1
+                sshkey: AAAAB3NzaCAAABgQCr8K8cOC92+4fXtiep8r2.......
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /key/{id}/delete:
+    delete:
+      tags:
+        - SSH Key
+      summary: Delete SSH Key
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /snapshot:
+    get:
+      tags:
+        - Snapshots
+      summary: Get Snapshots
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cloud/{cloudid}/snapshot/{snapshotid}/restore:
+    post:
+      tags:
+        - Snapshots
+      summary: Restore Snapshot
+      requestBody:
+        content: {}
+      parameters:
+        - name: cloudid
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: snapshotid
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /user:
+    get:
+      tags:
+        - SubUser
+      summary: Subuser List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - SubUser
+      summary: Create Subuser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                fullname: subuser1
+                email: subuser@gmail.com
+                mobile: +91 7703****71
+                permissions: compute_delete, compute_read, compute_write
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /user/{id}:
+    get:
+      tags:
+        - SubUser
+      summary: Subuser Details
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - SubUser
+      summary: Update Subuser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                permissions: compute_delete, compute_read, compute_write
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /user/{subuser_id}:
+    delete:
+      tags:
+        - SubUser
+      summary: Delete Subuser
+      parameters:
+        - name: subuser_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transfer/process/:
+    post:
+      tags:
+        - Transfer/Recieve Resources
+      summary: Recieve Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                id: '24213'
+                token: gkgz2yu14gk324j2g32i4xg34vw
+                type: cloud
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transfer/{resource_type}/{resource_id}/:
+    get:
+      tags:
+        - Transfer/Recieve Resources
+      summary: Transfer Resource
+      parameters:
+
+        - name: resource_type
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: resource_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/create:
+    post:
+      tags:
+        - vpc > vpc
+      summary: Create VPC
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: inmumbaizone2
+                name: my_vpc
+                planid: '1008'
+                network: 10.210.100.0
+                size: '24'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/{id}/destroy:
+    get:
+      tags:
+        - VPC-old
+      summary: Destroy VPC
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/{id}:
+    get:
+      tags:
+        - VPC-old
+      summary: VPC Details
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc:
+    get:
+      tags:
+        - vpc > vpc
+      summary: VPC List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn:
+    get:
+      tags:
+        - VPN
+      summary: VPN List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn/{id}:
+    get:
+      tags:
+        - VPN
+      summary: VPN Details
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn/deploy:
+    post:
+      tags:
+        - VPN
+      summary: VPN Deploy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: dcslug
+                name: name
+                planid: planid
+                accountlimit: accountlimit
+                billingcycle: billingcycle
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn/{id}/destroy:
+    delete:
+      tags:
+        - VPN
+      summary: Destroy VPN
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn/{vpn_id}/user/add:
+    get:
+      tags:
+        - VPN
+      summary: Add VPN User
+      parameters:
+
+        - name: vpn_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn/{id}/user/{user_name}/download:
+    get:
+      tags:
+        - VPN
+      summary: Download VPN User
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: user_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpn/{id}/user/{user_name}/remove:
+    delete:
+      tags:
+        - VPN
+      summary: Remove VPN User
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: user_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling:
+    get:
+      tags:
+        - Autoscaling
+      summary: Get Auto Scaling List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Autoscaling
+      summary: Add Auto Scaling
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: innoida
+                name: autoscaling-ywqo2pmc
+                'stackid: 213211': '213211'
+                planid: '10045'
+                minsize: '1'
+                maxsize: '5'
+                public_ip_enabled: 'true'
+                desiredsize: '10045'
+                vpc: 07b060b5-3e7b-4338-856b-ee1f3a36cedc
+                security_groups: '23'
+                target_groups or load_balancers: '23'
+                policies: >-
+                  [{name:'Policy-16H2jh', type:'cpu or ram', compare:'above or
+                  below', value:'90', adjust:'1', period:'5m',cooldown:'300'}]
+                schedules: Schedule-3P28Ngs
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/policy:
+    post:
+      tags:
+        - Autoscaling
+      summary: Add Auto Scaling Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: policy-ywqo2pmc
+                type: cpu
+                compare: above
+                value: '5'
+                adjust: '1'
+                period: 5m
+                cooldown: '300'
+                productid: ':17867'
+                product: scaling_group
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: |+
+            Please enter your unique API key prefaced by "Bearer" for access.
+
+
+
+
+
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/{id}/schedulepolicy:
+    post:
+      tags:
+        - Autoscaling
+      summary: Add Auto Scaling Schedule Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: schedule-ywqo2pmc
+                desiredsize: '1'
+                recurrence: once
+                start_date: '2024-04-24 16:48:00'
+                adjust: '1'
+                period: 5m
+                cooldown: '300'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/{id}/schedulepolicy/{schedulepolicy_id}:
+    post:
+      tags:
+        - Autoscaling
+      summary: Add Loadbalancer
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: schedulepolicy_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Autoscaling
+      summary: Delete Auto Scaling Schedule Policy
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: schedulepolicy_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Autoscaling
+      summary: Update Auto Scaling Schedule Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: schedule-ywqo2pmc
+                desiredsize: '1'
+                recurrence: once
+                start_date: '2024-04-24 16:48:00'
+                adjust: '1'
+                period: 5m
+                cooldown: '300'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: schedulepolicy_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/{id}/securitygroup/{securitygroup_id}:
+    post:
+      tags:
+        - Autoscaling
+      summary: Add Security Group
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: securitygroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Autoscaling
+      summary: Delete Security Group
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: securitygroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/{id}/targetgroup/{targetgroup_id}:
+    post:
+      tags:
+        - Autoscaling
+      summary: Add Target Group
+      requestBody:
+        content: {}
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: targetgroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Autoscaling
+      summary: Delete Target Group
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: targetgroup_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/policy/{id}:
+    delete:
+      tags:
+        - Autoscaling
+      summary: Delete Auto Scaling Policy
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Autoscaling
+      summary: Update Auto Scaling Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: policy-ywqo2pmc
+                type: cpu or ram
+                compare: above or below
+                value: '5'
+                adjust: '1'
+                period: 5m
+                cooldown: '300'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/{id}:
+    delete:
+      tags:
+        - Autoscaling
+      summary: Delete Auto Scaling
+      parameters:
+
+        - name: name
+          in: query
+          schema:
+            type: string
+          example: autoscaling_name
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Autoscaling
+      summary: Get Auto Scaling Details
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Autoscaling
+      summary: Update Auto Scaling Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: autoscaling-ywqo2pmc
+                stackid: '213211'
+                minsize: '1'
+                maxsize: '5'
+                desiredsize: '10045'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /autoscaling/{id}/loadbalancer/{loadbalancer_id}:
+    delete:
+      tags:
+        - Autoscaling
+      summary: Delete Loadbalancer
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: loadbalancer_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/{vpc_id}:
+    delete:
+      tags:
+        - vpc > vpc
+      summary: Delete VPC
+      parameters:
+        - name: vpc_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/subnet/create:
+    post:
+      tags:
+        - vpc > subnets
+      summary: Create Subnet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_subnet
+                vpcid: dea7aa54-92d7-4cf3-acc7-3318eca7b4fc
+                assign_public: '1'
+                is_default: '0'
+                type: public
+                network: 10.0.0.0/24
+                size: '24'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/subnet/{subnet_id}:
+    delete:
+      tags:
+        - vpc > subnets
+      summary: Delete Subnet
+      parameters:
+        - name: subnet_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/subnet:
+    get:
+      tags:
+        - vpc > subnets
+      summary: Subnet List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/natgateway:
+    post:
+      tags:
+        - vpc > nat-gateway
+      summary: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet: subnet-12345678
+                name: my-nat-gateway
+                userid: user-12345678
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - vpc > nat-gateway
+      summary: delete
+      parameters:
+        - name: gateway_id
+          in: query
+          schema:
+            type: string
+          example: ':gateway_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - vpc > nat-gateway
+      summary: get-one
+      parameters:
+        - name: subaction
+          in: query
+          schema:
+            type: string
+          example: list
+        - name: id
+          in: query
+          schema:
+            type: string
+          example: ':id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /elasticip:
+    get:
+      tags:
+        - vpc > elastic-ip
+      summary: Elastic IP List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /elasticip/allocate:
+    post:
+      tags:
+        - vpc > elastic-ip
+      summary: Allocate Elastic IP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: innoida
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /elasticip/{ip_address}/deallocate:
+    post:
+      tags:
+        - vpc > elastic-ip
+      summary: Deallocate Elastic IP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet: subnet-12345678
+                name: my-internet-gateway
+                userid: user-12345678
+      parameters:
+        - name: ip_address
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/peering:
+    get:
+      tags:
+        - vpc > Peering Connection
+      summary: Peering Connection List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - vpc > Peering Connection
+      summary: Create Peering Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: tmy_connection
+                dcslug: inmumbaizone2
+                requester_vpc_id: dea7aa54-92d7-4cf3-acc7-3318eca7b4fc
+                accepter_vpc_id: bec5f40b-7b6e-4911-9ae8-143cd1c4e5f5
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - vpc > Peering Connection
+      summary: Delete Peering Connection
+      parameters:
+        - name: peering_id
+          in: query
+          schema:
+            type: string
+          example: connection_id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/route:
+    post:
+      tags:
+        - vpc > routes
+      summary: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                route_id: r-12345678
+                destination_cidr_block: 10.0.2.0/24
+                target: nat-12345678
+                route_type: static
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc-route:
+    get:
+      tags:
+        - vpc > routes
+      summary: list
+      parameters:
+        - name: route_table_id
+          in: query
+          schema:
+            type: string
+          example: '{{route_table_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - vpc > routes
+      summary: delete
+      parameters:
+        - name: route_id
+          in: query
+          schema:
+            type: string
+          example: '{{route_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc-internetgateway:
+    post:
+      tags:
+        - vpc > internet-gateway
+      summary: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet: subnet-12345678
+                name: my-internet-gateway
+                userid: user-12345678
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - vpc > internet-gateway
+      summary: delete
+      parameters:
+        - name: gateway_id
+          in: query
+          schema:
+            type: string
+          example: '{{gateway_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - vpc > internet-gateway
+      summary: get-one
+      parameters:
+        - name: subaction
+          in: query
+          schema:
+            type: string
+          example: list
+        - name: id
+          in: query
+          schema:
+            type: string
+          example: '{{id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc-internetgateway/{id}/attach:
+    post:
+      tags:
+        - vpc > internet-gateway
+      summary: attachSubnet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet: subnet-12345678
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc-internetgateway/234236/dettach:
+    post:
+      tags:
+        - vpc > internet-gateway
+      summary: dettachSubnet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet: subnet-43564
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc-route-table:
+    post:
+      tags:
+        - vpc > route-tables
+      summary: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                vpc_id: vpc-12345678
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - vpc > route-tables
+      summary: delete
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+          example: '{{id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - vpc > route-tables
+      summary: list
+      parameters:
+        - name: vpc_id
+          in: query
+          schema:
+            type: string
+          example: '{{vpc_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/subnet/associate:
+    post:
+      tags:
+        - vpc
+      summary: associate_subnet_with_route_table
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet_id: subnet-12345678
+                route_table_id: route-3r723y8
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - vpc
+      summary: list_associated_subnets_for_route_table
+      parameters:
+        - name: route_table_id
+          in: query
+          schema:
+            type: string
+          example: '{{route_table_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /vpc/subnet/dissociate:
+    post:
+      tags:
+        - vpc
+      summary: dissociate_subnet_from_route_table
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                subnet_id: subnet-12345678
+                route_table_id: route-3r723y8
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stacks:
+    post:
+      tags:
+        - Stacks
+      summary: Add Stacks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: my_stack_name
+                description: my_stack_description
+                images: ubuntu-16.04-x86_64,centos-8-x86_64,debian-11-x86_64,..
+                status: '0'
+                script: '#!/bin/bash,...'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Stacks
+      summary: Get Stack Details
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stacks/{id}:
+    put:
+      tags:
+        - Stacks
+      summary: Update Stacks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: updated_stack_title
+                description: updated_stack_description
+                images: ubuntu-16.04-x86_64,centos-8-x86_64,debian-11-x86_65,..
+                status: '1'
+                script: '#!/bin/bash'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Stacks
+      summary: Delete Stack
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /certificates:
+    post:
+      tags:
+        - SSL
+      summary: Add SSL Certificate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: ssl-ywqo2pmc
+                certificate_key: sdfjbfke...;
+                private_key: fds^wer4^r7!w....
+                certificateChain: wrfncjksd...
+                type: custom
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - SSL
+      summary: Get Certificate Details
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /certificates/{id}:
+    delete:
+      tags:
+        - SSL
+      summary: Delete Certificate
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /pricing/objectstorage:
+    get:
+      tags:
+        - Object Storage > Bucket
+      summary: Object Storage Plan List
+      parameters:
+
+        - name: currency
+          in: query
+          schema:
+            type: string
+          example: ':currency_type'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket:
+    get:
+      tags:
+        - Object Storage > Bucket
+      summary: Object Storage List
+      parameters:
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{name}/:
+    get:
+      tags:
+        - Object Storage > Bucket
+      summary: Object Storage Details
+      parameters:
+
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/bucket/create/:
+    post:
+      tags:
+        - Object Storage > Bucket
+      summary: Create Object Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: mybucket
+                dcslug: inmumbaizone2
+                size: '10120'
+                price: '125'
+                billing: monthly
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{name}/delete/:
+    delete:
+      tags:
+        - Object Storage > Bucket
+      summary: Destroy Object Storage
+      parameters:
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{bucket-name}/policy/{policy-type}:
+    post:
+      tags:
+        - Object Storage > Bucket
+      summary: Update Access Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                policy: public,private,upload
+      parameters:
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: bucket-name
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: policy-type
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{name}/permission/{selected_permission}/accesskey/{selected_key}/:
+    post:
+      tags:
+        - Object Storage > Bucket
+      summary: Update Permission of Access Key
+      description: |-
+        **Permission Types :**
+
+        - read
+
+        - write
+
+        - full
+
+        - none
+      requestBody:
+        content: {}
+      parameters:
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: selected_permission
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: selected_key
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/innoida/bucket/{bucket_name}/objects:
+    get:
+      tags:
+        - Object Storage > Bucket
+      summary: Object Storage Files & Directories
+      parameters:
+
+        - name: path
+          in: query
+          schema:
+            type: string
+          example: ':subfolder_path'
+        - name: bucket_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{name}/createdirectory/:
+    post:
+      tags:
+        - Object Storage > Bucket
+      summary: Create Directory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                path: /name
+      parameters:
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{name}/delete/object:
+    delete:
+      tags:
+        - Object Storage > Bucket
+      summary: Delete File
+      parameters:
+        - name: path
+          in: query
+          schema:
+            type: string
+          example: ':filename/'
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/bucket/{name}/download:
+    get:
+      tags:
+        - Object Storage > Bucket
+      summary: Get Sharable URL Of Object Storage File
+      description: >-
+        1. **expire :** Can accept a string containing a number and a time unit
+        (**s** for seconds, **m** for minutes, **h** for hours, **d** for days,
+        **w** for weeks, **M** for months, **y** for years).
+
+        2. **Sample values:** 10M, 10s, 1w, 1y, 12h, 7d
+      parameters:
+
+        - name: path
+          in: query
+          schema:
+            type: string
+          example: ':filename'
+        - name: expire
+          in: query
+          schema:
+            type: string
+          example: ':time'
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+          example: innoida
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+          example: uthostorage
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/innoida/bucket/uthostorage/upload/internal:
+    post:
+      tags:
+        - Object Storage > Bucket
+      summary: Upload File
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/accesskeys/:
+    get:
+      tags:
+        - Object Storage > Access Keys
+      summary: Access keys List
+      parameters:
+
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/accesskey/create:
+    post:
+      tags:
+        - Object Storage > Access Keys
+      summary: Create Access Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                accesskey: my_access_key
+      parameters:
+
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /objectstorage/{dcslug}/accesskey/{name}/status:
+    post:
+      tags:
+        - Object Storage > Access Keys
+      summary: Modify Access Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                accesskey: Please provide the accesskey value
+                status: enable, disable, remove
+      parameters:
+
+        - name: dcslug
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ebs:
+    get:
+      tags:
+        - Elastic Block Storage
+      summary: Block Storage List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Elastic Block Storage
+      summary: Create Block Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: test_storage_5
+                dcslug: inmumbaizone2
+                disk: '10'
+                disk_type: SSD
+                iops: '3000'
+                throughput: '125'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ebs/{id}/resize:
+    put:
+      tags:
+        - Elastic Block Storage
+      summary: Resize Block Storage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                disk: '10'
+                iops: '3000'
+                throughput: '125'
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ebs/{storage-id}/destroy:
+    delete:
+      tags:
+        - Elastic Block Storage
+      summary: Delete Block Storage
+      parameters:
+        - name: storage-id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ebs/{storage_id}/attach:
+    put:
+      tags:
+        - Elastic Block Storage
+      summary: Attach Cloud Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                resourceid: '99999'
+                type: cloud
+      parameters:
+        - name: storage_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ebs/{storage_id}/dettach:
+    put:
+      tags:
+        - Elastic Block Storage
+      summary: Detach Cloud Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                resourceid: '99999'
+                type: cloud
+      parameters:
+        - name: storage_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /registry/projects:
+    get:
+      tags:
+        - Container Registry
+      summary: Container Registry List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /registry:
+    get:
+      tags:
+        - Container Registry
+      summary: Registry Credentials
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Container Registry
+      summary: Create Container Registry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dcslug: inmumbaizone2
+                project_name: myregistry
+                public: 'true'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /registry/project/{registry-name}:
+    delete:
+      tags:
+        - Container Registry
+      summary: Destroy Conainer Registry
+      parameters:
+        - name: registry-name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /alert/contact/list:
+    get:
+      tags:
+        - Monitoring & Contacts
+      summary: Get Contact List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /alert/contact/add:
+    post:
+      tags:
+        - Monitoring & Contacts
+      summary: Add Monitoring Contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: contact1
+                email: sample@gmail.com
+                mobilenumber: +91**********
+                status: '1'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: |+
+            Please enter your unique API key prefaced by "Bearer" for access.
+
+
+
+
+
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /alert/contact/{id}/update:
+    put:
+      tags:
+        - Monitoring & Contacts
+      summary: Update Monitoring Contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: contact1
+                email;: abc@gmail.com;
+                mobilenumber: +91**********
+                status: '1'
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /alert/contact/{id}/delete:
+    delete:
+      tags:
+        - Monitoring & Contacts
+      summary: Delete Monitoring Contact
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: |+
+            Please enter your unique API key prefaced by "Bearer" for access.
+
+
+
+
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /alert:
+    get:
+      tags:
+        - Monitoring & Contacts
+      summary: Get Alert List
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: |
+            Please enter your unique API key prefaced by "Bearer" for access.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Monitoring & Contacts
+      summary: Add Monitoring Alert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_group
+                ref_type: cloud
+                type: cpu
+                compare: above, below, equalto
+                value: '95'
+                for: 5m
+                ref_ids: '2324'
+                contacts: '343'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /{id}:
+    put:
+      tags:
+        - Monitoring & Contacts
+      summary: Update Monitoring Alert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_group
+                ref_type: cloud
+                type: cpu
+                compare: above, below, equalto
+                value: '95'
+                for: 5m
+                ref_ids: '2324'
+                contacts: '343'
+                status: active
+      parameters:
+
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /alert/{alert_id}/delete:
+    delete:
+      tags:
+        - Monitoring & Contacts
+      summary: Delete Monitoring Alert
+      parameters:
+        - name: alert_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /targetgroup:
+    get:
+      tags:
+        - TargetGroup
+      summary: Target Group List
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - TargetGroup
+      summary: Add Target Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_group
+                protocol: HTTP
+                port: '80'
+                health_check_path: /pathtargetgroup
+                health_check_protocol: /protocoltargetgroup
+                health_check_interval: /timeout
+                health_check_timeout: /timeout
+                healthy_threshold: /threshold
+                unhealthy_threshold: /threshold
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /targetgroup/{target_group_id}:
+    put:
+      tags:
+        - TargetGroup
+      summary: Update Target Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_tg
+                protocol: HTTP
+                port: '80'
+                health_check_path: /abc
+                health_check_protocol: HTTP
+                health_check_interval: '300'
+                health_check_timeout: '300'
+                healthy_threshold: '300'
+                unhealthy_threshold: '300'
+      parameters:
+
+        - name: target_group_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /targetgroup/{id}:
+    delete:
+      tags:
+        - TargetGroup
+      summary: Delete Target Group
+      parameters:
+
+        - name: name
+          in: query
+          schema:
+            type: string
+          example: target_group_name
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /targetgroup/{target_group_id}/target:
+    post:
+      tags:
+        - TargetGroup
+      summary: Add Target in Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                backend_protocol: HTTPS or HTTP or TCP or UDP
+                backend_port: '2000'
+                cloudid: '999999'
+                ip: 255.255.255.255
+      parameters:
+        - name: target_group_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /targetgroup/{target_group_id}/target/{target_id}:
+    delete:
+      tags:
+        - TargetGroup
+      summary: Delete Target From Target Group
+      parameters:
+
+        - name: target_group_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: target_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /ipsec:
+    get:
+      tags:
+        - IpSec
+      summary: Connection Logs List
+      parameters:
+        - name: action
+          in: query
+          schema:
+            type: string
+          example: connection_logs
+        - name: ipsecid
+          in: query
+          schema:
+            type: string
+          example: ':ipsec_id'
+        - name: name
+          in: query
+          schema:
+            type: string
+          example: ':connection_name'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - IpSec
+      summary: Create Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ipsecid: '48399'
+                name: my_connection
+                dcslug: innoida
+                remote_ip: 123.255.255.10
+                remote_local_ip: 192.123.20.0/24
+                local_ip: 192.123.20.0/24
+                remote_local_ip_size: '24'
+                psk: asdasd
+                phase1-encryption: aes128
+                phase1-integrity: sha256
+                phase1-dh-group: modp2048
+                phase2-encryption: aes128
+                phase2-integrity: sha256
+                key_lifetime: '86400'
+      parameters:
+        - name: action
+          in: query
+          schema:
+            type: string
+          example: connection
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - IpSec
+      summary: Delete Connection
+      parameters:
+        - name: action
+          in: query
+          schema:
+            type: string
+          example: connection
+        - name: ipsecid
+          in: query
+          schema:
+            type: string
+          example: ':ipsec_id'
+        - name: id
+          in: query
+          schema:
+            type: string
+          example: ':connection_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - IpSec
+      summary: Update Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ipsecid: '48399'
+                name: yugukjoij
+                id: '93180'
+                dcslug: innoida
+                remote_ip: 192.168.10.10
+                remote_local_ip: 192.123.20.0/24
+                local_ip: 192.123.20.0/24
+                psk: awsds
+                phase1-encryption: aes128
+                phase1-integrity: sha256
+                phase1-dh-group: modp2048
+                phase2-encryption: aes128
+                phase2-integrity: sha256
+                key_lifetime: '86400'
+      parameters:
+        - name: action
+          in: query
+          schema:
+            type: string
+          example: connection
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/list:
+    get:
+      tags:
+        - Waf
+      summary: Waf List
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/create:
+    post:
+      tags:
+        - Waf
+      summary: Create Waf
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_waf
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/attach_rule:
+    post:
+      tags:
+        - Waf
+      summary: Enable rule in ruleset
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rulesetid
+          in: query
+          schema:
+            type: string
+          example: ':rule_set_id'
+        - name: wafid
+          in: query
+          schema:
+            type: string
+          example: ':waf_id'
+        - name: ruleid
+          in: query
+          schema:
+            type: string
+          example: ':rule_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/detach_rule:
+    post:
+      tags:
+        - Waf
+      summary: Disable rule in ruleset
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rulesetid
+          in: query
+          schema:
+            type: string
+          example: ':rule_set_id'
+        - name: wafid
+          in: query
+          schema:
+            type: string
+          example: ':waf_id'
+        - name: ruleid
+          in: query
+          schema:
+            type: string
+          example: ':rule_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/create_ruleset:
+    post:
+      tags:
+        - Waf
+      summary: Create Custom Ruleset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: my_ruleset
+                description: my_ruleset_description
+                type: crs/custom
+                wafid: '1'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/add_rule:
+    post:
+      tags:
+        - Waf
+      summary: Add rule to custom ruleset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                action_type: allow
+                desc: jnaskjnd
+                name: my_rule
+                severity: '9'
+                type: ip
+                value: 192.168.1.1/22
+                operator: equals
+                field: my_field
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rulesetid
+          in: query
+          schema:
+            type: string
+          example: ':rule_set_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/create_waf_instance:
+    post:
+      tags:
+        - Waf
+      summary: Attach Loadbalancer to Waf
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                lbid: '1'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wafid
+          in: query
+          schema:
+            type: string
+          example: ':waf_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /waf/delete:
+    delete:
+      tags:
+        - Waf
+      summary: Destroy Waf
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wafid
+          in: query
+          schema:
+            type: string
+          example: ':waf_id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
