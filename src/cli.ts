@@ -43,8 +43,8 @@ import * as mod_waf from './endpoints/waf.js';
 
 const program = new Command();
 program
-  .name("cloudctl")
-  .description("CLI to interact with Cloud Provider APIs")
+  .name("utho")
+  .description("Utho Cloud CLI")
   .version("0.1.0")
   .option('-d, --debug', 'Enable verbose debug logging');
 
@@ -101,7 +101,7 @@ function buildClient(opts: BaseOpts) {
   if (process.env.CLOUD_DEBUG === '1') {
     const start = apiKey.slice(0, 6);
     const end = apiKey.slice(-6);
-    console.error('[cloudctl][config]', { baseUrl, apiKeyMasked: `${start}...${end}`, length: apiKey.length });
+  console.error('[utho][config]', { baseUrl, apiKeyMasked: `${start}...${end}`, length: apiKey.length });
   }
   return new ApiClient({ baseUrl, apiKey });
 }
@@ -257,7 +257,7 @@ program.command('service')
       console.log(JSON.stringify(result, null, 2));
     } catch(e) {
       const err = e instanceof Error ? e : new Error(String(e));
-      console.error('[cloudctl][error]', err.message);
+  console.error('[utho][error]', err.message);
       if (process.env.CLOUD_DEBUG==='1') console.error(err.stack);
       process.exitCode = 1;
     }

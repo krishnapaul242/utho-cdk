@@ -7,10 +7,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": {
-        "default": "./dist/index.js",
-        "module": "./dist/index.mjs"
-      },
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "default": "./dist/index.js"
     },
@@ -20,7 +17,7 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "cloudctl": "dist/cli.cjs"
+    "utho": "dist/cli.cjs"
   },
   "scripts": {
   "build": "tsup && tsc --project tsconfig.json --emitDeclarationOnly --declaration --declarationMap --outDir dist && node scripts/post-build.cjs",

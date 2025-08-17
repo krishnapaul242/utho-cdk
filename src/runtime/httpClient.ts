@@ -45,7 +45,7 @@ export class HttpClient {
           safeHeaders.Authorization = safeHeaders.Authorization.replace(/Bearer (.+)/, 'Bearer ***');
         }
         // eslint-disable-next-line no-console
-        console.error('[cloudctl][request]', method?.toUpperCase(), url, { params, data, headers: safeHeaders });
+  console.error('[utho][request]', method?.toUpperCase(), url, { params, data, headers: safeHeaders });
         return config;
       });
     }
@@ -54,7 +54,7 @@ export class HttpClient {
       (r) => {
         if (debug) {
           // eslint-disable-next-line no-console
-          console.error('[cloudctl][response]', r.status, r.config.url);
+          console.error('[utho][response]', r.status, r.config.url);
         }
         return r;
       },
@@ -63,7 +63,7 @@ export class HttpClient {
           const res: AxiosResponse = err.response;
           if (debug) {
             // eslint-disable-next-line no-console
-            console.error('[cloudctl][response][error]', res.status, res.config.url, res.data);
+            console.error('[utho][response][error]', res.status, res.config.url, res.data);
           }
           throw new HttpError(
             `Request failed with status ${res.status}`,

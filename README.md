@@ -4,7 +4,7 @@ Unified TypeScript client + CLI + browser bundle for Utho Cloud's OpenAPI (Swagg
 
 ## Features
 - Programmatic client for Node.js & browser
-- CLI (`cloudctl`) for ad-hoc calls and scripting
+- CLI (`utho`) for ad-hoc calls and scripting
 - Type-safe models generated from OpenAPI using `openapi-typescript`
 - Built with `tsup` producing ESM, CJS, and IIFE bundles
 
@@ -23,14 +23,14 @@ const instances = await client.request({ method: 'GET', path: '/v1/instances' })
 
 CLI usage:
 ```bash
-cloudctl call GET /v1/instances -k $CLOUD_API_KEY
+utho call GET /v1/instances -k $CLOUD_API_KEY
 ```
 Common subcommands:
 ```bash
-cloudctl apikey:list -k $CLOUD_API_KEY
-cloudctl apikey:add -k $CLOUD_API_KEY
-cloudctl apikey:delete <id> -k $CLOUD_API_KEY
-cloudctl account:info -k $CLOUD_API_KEY
+utho apikey:list -k $CLOUD_API_KEY
+utho apikey:add -k $CLOUD_API_KEY
+utho apikey:delete <id> -k $CLOUD_API_KEY
+utho account:info -k $CLOUD_API_KEY
 ```
 If API key not supplied, you'll be prompted securely.
 
