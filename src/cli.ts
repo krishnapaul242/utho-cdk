@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import inquirer from "inquirer";
 import { ApiClient } from "./runtime/client.js";
-import { get_api as listApiKeys, post_api_generate as addApiKey, delete_api_delete as deleteApiKey, get_account_info as accountInfo } from "./endpoints/wrappers.js";
+import { get_api as listApiKeys, post_api_generate as addApiKey, delete_api_id_delete as deleteApiKey, get_account_info as accountInfo } from "./endpoints/wrappers.js";
 
 const program = new Command();
 program
