@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 import { Command } from "commander";
+// Import package version dynamically so CLI version matches published package
+// (esbuild/tsup will inline this JSON at build time)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - allow JSON import assertion under NodeNext
+import pkg from '../package.json' assert { type: 'json' };
 import inquirer from "inquirer";
 import { ApiClient } from "./runtime/client.js";
 import { get_api as listApiKeys, post_api_generate as addApiKey, delete_api_id_delete as deleteApiKey, get_account_info as accountInfo } from "./endpoints/index.js";
@@ -45,7 +50,7 @@ const program = new Command();
 program
   .name("utho")
   .description("Utho Cloud CLI")
-  .version("0.1.0")
+  .version(pkg.version)
   .option('-d, --debug', 'Enable verbose debug logging');
 
 async function ask<T = any>(questions: any): Promise<T> {

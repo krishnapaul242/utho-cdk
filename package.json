@@ -20,7 +20,8 @@
     "utho": "dist/cli.cjs"
   },
   "scripts": {
-  "build": "tsup && tsc --project tsconfig.json --emitDeclarationOnly --declaration --declarationMap --outDir dist && node scripts/post-build.cjs",
+    "build": "tsup && tsc --project tsconfig.json --emitDeclarationOnly --declaration --declarationMap --outDir dist && node scripts/post-build.cjs",
+    "prepublishOnly": "npm run build",
     "dev": "tsup --watch",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit",
@@ -30,6 +31,7 @@
     "prepare": "husky install"
   },
   "keywords": [
+    "utho",
     "openapi",
     "swagger",
     "client",
@@ -67,11 +69,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/utho-cdk.git"
+    "url": "git+https://github.com/krishnapaul242/utho-cdk.git"
   },
-  "homepage": "https://github.com/your-org/utho-cdk#readme",
-  "bugs": { "url": "https://github.com/your-org/utho-cdk/issues" },
-  "author": "Your Name <you@example.com>",
+  "homepage": "https://github.com/krishnapaul242/utho-cdk#readme",
+  "bugs": {
+    "url": "https://github.com/krishnapaul242/utho-cdk/issues"
+  },
+  "author": "Krishna Paul <me@krishnapaul.in>",
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "eslint --fix",
