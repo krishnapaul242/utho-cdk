@@ -1,0 +1,10 @@
+import { ApiClient } from '../runtime/client.js';
+import { EndpointOptions } from './common.js';
+// Auto-generated wrappers for segment: alert
+export async function get_alert_contact_list<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: '/alert/contact/list', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_alert_contact_add<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/alert/contact/add', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function put_alert_contact_id_update<T = unknown>(client: ApiClient, id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'PUT', path: `/alert/contact/${id}/update`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_alert_contact_id_delete<T = unknown>(client: ApiClient, id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/alert/contact/${id}/delete`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function get_alert<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: '/alert', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_alert<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/alert', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_alert_alert_id_delete<T = unknown>(client: ApiClient, alert_id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/alert/${alert_id}/delete`, query: options?.query, body: options?.body, headers: options?.headers }); }

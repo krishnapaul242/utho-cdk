@@ -1,0 +1,9 @@
+import { ApiClient } from '../runtime/client.js';
+import { EndpointOptions } from './common.js';
+// Auto-generated wrappers for segment: dns
+export async function get_dns<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: '/dns', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function get_dns_domain<T = unknown>(client: ApiClient, domain: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: `/dns/${domain}`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_dns_adddomain<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/dns/adddomain', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_dns_domain_record_add<T = unknown>(client: ApiClient, domain: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: `/dns/${domain}/record/add/`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_dns_domain_delete<T = unknown>(client: ApiClient, domain: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/dns/${domain}/delete`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_dns_domain_record_recordid_delete<T = unknown>(client: ApiClient, domain: string, recordid: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/dns/${domain}/record/${recordid}/delete/`, query: options?.query, body: options?.body, headers: options?.headers }); }

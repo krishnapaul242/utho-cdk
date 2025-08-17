@@ -1,0 +1,10 @@
+import { ApiClient } from '../runtime/client.js';
+import { EndpointOptions } from './common.js';
+// Auto-generated wrappers for segment: vpn
+export async function get_vpn<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: '/vpn', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function get_vpn_id<T = unknown>(client: ApiClient, id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: `/vpn/${id}`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_vpn_deploy<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/vpn/deploy', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_vpn_id_destroy<T = unknown>(client: ApiClient, id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/vpn/${id}/destroy`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function get_vpn_vpn_id_user_add<T = unknown>(client: ApiClient, vpn_id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: `/vpn/${vpn_id}/user/add`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function get_vpn_id_user_user_name_download<T = unknown>(client: ApiClient, id: string, user_name: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: `/vpn/${id}/user/${user_name}/download`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_vpn_id_user_user_name_remove<T = unknown>(client: ApiClient, id: string, user_name: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/vpn/${id}/user/${user_name}/remove`, query: options?.query, body: options?.body, headers: options?.headers }); }

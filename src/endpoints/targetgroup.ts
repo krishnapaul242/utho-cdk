@@ -1,0 +1,9 @@
+import { ApiClient } from '../runtime/client.js';
+import { EndpointOptions } from './common.js';
+// Auto-generated wrappers for segment: targetgroup
+export async function get_targetgroup<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: '/targetgroup', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_targetgroup<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/targetgroup', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function put_targetgroup_target_group_id<T = unknown>(client: ApiClient, target_group_id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'PUT', path: `/targetgroup/${target_group_id}`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_targetgroup_id<T = unknown>(client: ApiClient, id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/targetgroup/${id}`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_targetgroup_target_group_id_target<T = unknown>(client: ApiClient, target_group_id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: `/targetgroup/${target_group_id}/target`, query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_targetgroup_target_group_id_target_target_id<T = unknown>(client: ApiClient, target_group_id: string, target_id: string, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: `/targetgroup/${target_group_id}/target/${target_id}`, query: options?.query, body: options?.body, headers: options?.headers }); }

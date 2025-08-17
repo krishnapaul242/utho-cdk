@@ -1668,7 +1668,7 @@ paths:
           schema:
             type: string
           required: true
-        - name: id
+        - name: nodepool_id
           in: path
           schema:
             type: string

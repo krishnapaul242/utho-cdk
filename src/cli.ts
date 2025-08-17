@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import inquirer from "inquirer";
 import { ApiClient } from "./runtime/client.js";
-import { get_api as listApiKeys, post_api_generate as addApiKey, delete_api_id_delete as deleteApiKey, get_account_info as accountInfo } from "./endpoints/wrappers.js";
+import { get_api as listApiKeys, post_api_generate as addApiKey, delete_api_id_delete as deleteApiKey, get_account_info as accountInfo } from "./endpoints/index.js";
 
 const program = new Command();
 program
@@ -18,7 +18,7 @@ program
   .option("-q, --query <json>", "JSON for query params")
   .option("-b, --body <json>", "JSON request body")
   .option("-k, --api-key <key>", "API key (or set CLOUD_API_KEY env var)")
-  .option("-u, --url <url>", "Base URL", process.env.CLOUD_BASE_URL || "https://api.example.com")
+  .option("-u, --url <url>", "Base URL", process.env.CLOUD_BASE_URL || "https://api.utho.com/v2")
   .action(async (method: string, path: string, opts: { apiKey?: string; url?: string; query?: string; body?: string }) => {
     let apiKey = opts.apiKey || process.env.CLOUD_API_KEY;
     if (!apiKey) {

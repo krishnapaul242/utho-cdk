@@ -1,0 +1,11 @@
+import { ApiClient } from '../runtime/client.js';
+import { EndpointOptions } from './common.js';
+// Auto-generated wrappers for segment: waf
+export async function get_waf_list<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'GET', path: '/waf/list', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_waf_create<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/waf/create', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_waf_attach_rule<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/waf/attach_rule', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_waf_detach_rule<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/waf/detach_rule', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_waf_create_ruleset<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/waf/create_ruleset', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_waf_add_rule<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/waf/add_rule', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function post_waf_create_waf_instance<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'POST', path: '/waf/create_waf_instance', query: options?.query, body: options?.body, headers: options?.headers }); }
+export async function delete_waf_delete<T = unknown>(client: ApiClient, options?: EndpointOptions): Promise<T> { return client.request<T>({ method: 'DELETE', path: '/waf/delete', query: options?.query, body: options?.body, headers: options?.headers }); }

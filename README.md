@@ -17,7 +17,7 @@ Programmatic usage:
 ```ts
 import { ApiClient } from 'utho-cdk';
 
-const client = new ApiClient({ baseUrl: 'https://api.example.com', apiKey: process.env.CLOUD_API_KEY });
+const client = new ApiClient({ baseUrl: 'https://api.utho.com/v2', apiKey: process.env.CLOUD_API_KEY });
 const instances = await client.request({ method: 'GET', path: '/v1/instances' });
 ```
 

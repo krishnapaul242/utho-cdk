@@ -3144,6 +3144,7 @@ export interface paths {
                 header?: never;
                 path: {
                     id: string;
+                    nodepool_id: string;
                 };
                 cookie?: never;
             };

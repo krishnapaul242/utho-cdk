@@ -1,17 +1,13 @@
 #!/usr/bin/env node
 import { execSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Prefer local spec if present, else CLOUD_OPENAPI_URL, else remote placeholder
 const localSpec = path.join(process.cwd(), 'spec', 'utho-api-latest.yaml');
 const OPENAPI_URL = existsSync(localSpec)
   ? localSpec
-  : (process.env.CLOUD_OPENAPI_URL || 'https://api.example.com/openapi.json');
+  : (process.env.CLOUD_OPENAPI_URL || 'https://api.utho.com/v2/openapi.json');
 const outDir = path.join(process.cwd(), 'generated');
 if (!existsSync(outDir)) mkdirSync(outDir);
 

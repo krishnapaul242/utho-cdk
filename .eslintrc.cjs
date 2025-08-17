@@ -12,7 +12,8 @@ module.exports = {
   env: { node: true, es2022: true },
   rules: {
     'import/no-unresolved': 'off', // ts handles
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
   },
   ignorePatterns: ['dist', 'generated']
 };
