@@ -28,6 +28,8 @@
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "generate": "node ./scripts/generate-api.mjs && node ./scripts/wrap-endpoints.mjs",
+  "docs:generate": "node ./scripts/generate-docs.mjs",
+  "docs:build": "npm run docs:generate",
     "prepare": "husky install"
   },
   "keywords": [

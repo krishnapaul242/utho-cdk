@@ -1,0 +1,58 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'spec/**'
+      - 'scripts/generate-docs.mjs'
+      - 'package.json'
+      - 'docs/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install deps
+        run: npm ci
+      - name: Generate docs
+        run: npm run docs:generate
+      - name: Install MkDocs (if config present)
+        if: exists('mkdocs.yml')
+        run: |
+          pip install mkdocs mkdocs-material
+      - name: Build MkDocs site (if config present)
+        if: exists('mkdocs.yml')
+        run: |
+          mkdocs build -d site
+      - name: Copy MkDocs site to docs (if built)
+        if: exists('mkdocs.yml')
+        run: |
+          rsync -a site/ docs/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
